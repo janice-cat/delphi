@@ -1,0 +1,48 @@
+#!/usr/bin/env python3
+import os
+import glob as glob
+import sys
+
+os.system('mkdir -p ./dumpMC/log/')
+os.system('mkdir -p ./dumpMC/err/')
+os.system('mkdir -p ./dumpMC/out/')
+os.system('g++ `root-config --glibs --cflags` -lEG -I TPCNtupleFormat/ `$FASTJETDIR/bin/fastjet-config --cxxflags --libs --plugins` -o bin/convertMC.exe convertMC.C')
+
+PDLINPUT_txt = '''
+*
+* PDLINPUT file for DES multievt request
+*
+FILE = {}
+*
+'''
+
+#tin = '/eos/opendata/delphi/simulated-data/cern/qqps/v94c/91.25/qqps*.sdst'
+tin = '/eos/opendata/delphi/simulated-data/karlsruhe/wwex_postdst/v98d2/189/*5802*.xsdst'
+
+tout = '/eos/user/z/zhangj/DELPHI/simulation/1998/wwex_postdst/v98d2/189/'
+
+if len(sys.argv) > 1:
+    if len(sys.argv) == 3:
+        tin = sys.argv[1]
+        tout = sys.argv[2]
+    else:
+        print(sys.argv)
+        print("Please specify input and output!")
+        sys.exit()
+    
+os.chdir('dumpMC')
+for al in glob.glob(tin):
+    f = open('PDLINPUT', 'w')
+    f.write(PDLINPUT_txt.format(al))
+    f.close()
+    basename=os.path.basename(al.strip('.al'))
+    os.system('cat PDLINPUT')
+    os.system(f'bash dump.sh {basename}')
+    os.system('ls -lh')
+    os.system(f'echo Recorded `grep -c HAPPY dump.{basename}.log` events!')
+    os.system(f'mv dump.{basename}.log log/')
+    os.system(f'mv dump.{basename}.err err/')
+    os.system(f'../bin/convertMC.exe log/dump.{basename}.log out/{basename}.root')
+    os.system(f'mv out/{basename}.root {tout}')
+    os.system(f'rm log/dump.{basename}.log')
+    os.system(f'rm err/dump.{basename}.err')

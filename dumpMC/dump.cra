@@ -1,0 +1,127 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                      %
+%         Machine independent cradle to create SKELANA library         %
+%                                                                      %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
++OPTION VERbose
++USE, ${PLINAM}.
+%
++USE, IBMVM, IF = CERNVM.
++USE, VMS  , IF = ALPHAVMS, VAXVMS.
++USE, UNIX , IF = ALPHAOSF, DECS, HPUX, IBMRT, LINUX.
+%
++EXE.
++PARAM, CLASH, N=1.
++OPT, MAPASM, UREF, LOST, BIGUSE.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%   Get all the KEEP's needed for SKELANA
+%
+% PHDST CDE's
++USE,P=PHDSTCDE.
++PAM,11,T=A,C, R=PHDSTCDE, IF=IBMVM.              PHDSTXX CARDS F
++PAM,11,T=A,C, R=PHDSTCDE, IF=VMS.     DELPHI_PAM:PHDSTXX.CAR
++PAM,11,T=A,C, R=PHDSTCDE, IF=UNIX.  (DELPHI_PAM)/phdstxx.car
+%
+% DELPHI standard CDE's
++USE,P=STDCDES.
++PAM,11,T=A,C, R=STDCDES,  IF=IBMVM.              STDCDES CARDS E
++PAM,11,T=A,C, R=STDCDES,  IF=VMS.     DELPHI_PAM:STDCDES.CAR
++PAM,11,T=A,C, R=STDCDES,  IF=UNIX.  (DELPHI_PAM)/stdcdes.car
+%
+% JETSET CDE's
++USE,P=JETCDES.
++PAM,11,T=A,C, R=JETCDES,  IF=IBMVM.              JETSET74 CAR W
++PAM,11,T=A,C, R=JETCDES,  IF=VMS.     DELPHI_PAM:JETSET74.CAR
++PAM,11,T=A,C, R=JETCDES,  IF=UNIX.  (DELPHI_PAM)/jetset74.car
+%
+% VECSUB CDE's
++USE,P=VECDES.
++PAM,11,T=A,C, R=VECDES,   IF=IBMVM.              VECSUB72 CARDS E
++PAM,11,T=A,C, R=VECDES,   IF=VMS.     DELPHI_PAM:VECSUB72.CAR
++PAM,11,T=A,C, R=VECDES,   IF=UNIX.  (DELPHI_PAM)/vecsub72.car
+%
+% MUID CDE's
++USE,P=FMUCDE.
++PAM,11,T=A,C, R=FMUCDE,   IF=IBMVM.              MUFLAG CARDS E
++PAM,11,T=A,C, R=FMUCDE,   IF=VMS.     DELPHI_PAM:MUFLAG.CAR
++PAM,11,T=A,C, R=FMUCDE,   IF=UNIX.  (DELPHI_PAM)/muflag.car
+%
+% HACCOR CDE's
++USE,P=MYCDES.
++PAM,11,T=A,C, R=MYCDES,   IF=IBMVM.              HACCORXX CARDS E
++PAM,11,T=A,C, R=MYCDES,   IF=VMS.     DELPHI_PAM:haccorxx.car
++PAM,11,T=A,C, R=MYCDES,   IF=UNIX.  (DELPHI_PAM)/haccorxx.car
+%
+% ELEPHANT CDE's
++USE,P=ELEPHCDE.
++PAM,11,T=A,C, R=ELEPHCDE, IF=IBMVM.              ELEPHA32 CARDS E
++PAM,11,T=A,C, R=ELEPHCDE, IF=VMS.     DELPHI_PAM:ELEPHA32.CAR
++PAM,11,T=A,C, R=ELEPHCDE, IF=UNIX.  (DELPHI_PAM)/elepha32.car
+%
+% B_TAGGING CDE's
++USE,P=AABTCDE.
++PAM,11,T=A,C, R=AABTCDE,  IF=IBMVM.              AABTAGXX CARDS E
++PAM,11,T=A,C, R=AABTCDE,  IF=VMS.     DELPHI_PAM:AABTAGXX.CAR
++PAM,11,T=A,C, R=AABTCDE,  IF=UNIX.  (DELPHI_PAM)/aabtagxx.car
+%
+% B_TAGGING CDE's
++USE,P=MAMCDE.
++PAM,11,T=A,C, R=MAMCDE,   IF=IBMVM.              MAMMOTH CARDS E
++PAM,11,T=A,C, R=MAMCDE,   IF=VMS.     DELPHI_PAM:MAMMOTH.CAR
++PAM,11,T=A,C, R=MAMCDE,   IF=UNIX.  (DELPHI_PAM)/mammoth.car
+%
+% RICH identification keeps 
++USE,P=PXRIUN,D=RIBCDE.
++PAM,11,T=A,C,             IF=IBMVM.             PXRICH CARDS E  
++PAM,11,T=A,C,             IF=VMS.    DELPHI_PAM:pxrich.car
++PAM,11,T=A,C,             IF=UNIX. (DELPHI_PAM)/pxrich.car
+%
++USE,P=ANA_RIBCDE.
++PAM,11,T=A,C, R=ANA_RIBCDE, IF=IBMVM.             RIBMEAN CARDS E  
++PAM,11,T=A,C, R=ANA_RIBCDE, IF=VMS.    DELPHI_PAM:ribmean.car
++PAM,11,T=A,C, R=ANA_RIBCDE, IF=UNIX. (DELPHI_PAM)/ribmean.car
+%
+%
++USE,P=REMCDE.
++PAM,11,T=A,C,            IF=IBMVM.              REMCLU CARDS E
++PAM,11,T=A,C,            IF=VMS.     DELPHI_PAM:remclu.car
++PAM,11,T=A,C,            IF=UNIX.  (DELPHI_PAM)/remclu.car
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%   Define the necessary SKELANA modules/processors  
+%
+%+USE,NOPSHORT.    NO Short DST    information
+%+USE,NOPSFULL.    NO Full  DST    information
+%
+%+USE,NOIFLTRA.    NO Track       information
+%+USE,NOIFLSIM.    NO Simulation  information
+%+USE,NOIFLBSP.    NO Beam Spot   information
+%+USE,NOIFLBTG.    NO Btagging    information
+%+USE,NOIFLEMC.    NO Elm.        calorimetry
+%+USE,NOIFLHAC.    NO Hadron      calorimetry
+%+USE,NOIFLELE.    NO Electron    identification
+%+USE,NOIFLPHO.    NO Photon      identification 
+%+USE,NOIFLPHC.    NO Photon      conversion
+%+USE,NOIFLMUO.    NO Muon        identification
+%+USE,NOIFLHAD.    NO Hadron      identification
+%+USE,NOIFLVDH.    NO Vertex      Detector hits
+%+USE,NOIFLRV0.    NO V0          reconstruction
+%+USE,NOIFLUTE.    NO TE banks    information
+%+USE,NOIFLSTC.    NO STIC        information
+%+USE,NOIFLFIX.    NO Fixing      (full DST only)
+%+USE,NOIFLRNQ.    NO Run quality selection
+%+USE,NOIFLBHP.    NO Bad 97 HPC  event rejections
+%+USE,NOIFLECL.    NO Elm.cluster reconstruction
+%+USE,NOIFLJET.    NO Jet         reconstruction 
+%
+%   Get the code of SKELANA and utility routines
+%
++USE, P=PSMAIN, T=E.
+%
++PAM,11,T=A,C,             IF=UNIX. dump.car
+%
++QUIT.

@@ -327,13 +327,15 @@ CCC  +        IHAD4 .NE. 0 ) NEED = 1
 
 *---  Dump event information as plain text
       PRINT *, "--------------------------"
-      WRITE(*,98)      "HAPPY CHECK: EVENT   :",IIIRUN,":",IIIEVT
-      WRITE(*, 99)     "CHECK: TRACKS  :", NVECP
+      WRITE(*,98)      "HAPPY CHECK: EVENT :",IIIRUN,":",IIIEVT
+      WRITE(*,97)      "CHECK: ECM     :",ECMAS
+      WRITE(*, 99)     "CHECK: TRACKS :", NVECP
       DO I=1, NVECP
          WRITE(*, *)  I, VECP(7,I), VECP(1,I),VECP(2,I),
      $        VECP(3,I), VECP(4,I), QEMF(8,I), QHPC(8,I),
      $        QHAC(8,I), QSTIC(1,I), LVLOCK(I)
       ENDDO
+ 97   FORMAT(A,F10.2)
  98   FORMAT(A,I10,A,I10)
  99   FORMAT(A,I10)
  100  FORMAT(A,F12.6)

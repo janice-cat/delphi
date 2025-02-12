@@ -2,9 +2,9 @@
 import os
 import glob as glob
 
-os.system('mkdir -p log/')
-os.system('mkdir -p err/')
-os.system('mkdir -p bin/')
+os.system('mkdir -p ./dump/log/')
+os.system('mkdir -p ./dump/err/')
+os.system('mkdir -p ./dump/bin/')
 os.system('g++ `root-config --glibs --cflags` -I TPCNtupleFormat/ `$FASTJETDIR/bin/fastjet-config --cxxflags --libs --plugins` -o bin/convert.exe convert.C')
 
 PDLINPUT_txt = '''
@@ -15,14 +15,21 @@ FILE = {}
 *
 '''
 
-for al in glob.glob('/eos/cms/store/group/phys_heavyions/yjlee/delphiData/1998/*.al'):
-	f = open('PDLINPUT', 'w')
-	f.write(PDLINPUT_txt.format(al))
-	f.close()
-	os.system('cat PDLINPUT')
-	os.system('bash dump.sh')
-	os.system('echo Recorded `grep -c HAPPY dump.log` events!')
-	basename=os.path.basename(al.strip('.al'))
-	os.system('mv dump.log log/dump.{}.log'.format(basename))
-	os.system('mv dump.err err/dump.{}.err'.format(basename))
-	os.system('bin/convert.exe log/dump.{}.log out/{}.root'.format(basename,basename))
+#nickname = 'Y13710'
+nickname = 'R07930'
+
+os.chdir('dump')
+for al in glob.glob(f'/eos/opendata/delphi/collision-data/{nickname}/{nickname}.*.al'):
+    f = open('PDLINPUT', 'w')
+    f.write(PDLINPUT_txt.format(al))
+    f.close()
+    os.system('cat PDLINPUT')
+    os.system('bash dump.sh')
+    os.system('echo Recorded `grep -c HAPPY dump.log` events!')
+    basename=os.path.basename(al.strip('.al'))
+    os.system('mv dump.log log/dump.{}.log'.format(basename))
+    os.system('mv dump.err err/dump.{}.err'.format(basename))
+    os.system('bin/convert.exe log/dump.{}.log out/{}.root'.format(basename,basename))
+    os.system(f'mv out/{basename}.root /eos/user/z/zhangj/DELPHI/collision_data/1998/')
+    os.system(f'rm log/dump.{basename}.log')
+    os.system(f'rm err/dump.{basename}.err')

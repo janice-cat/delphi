@@ -148,7 +148,7 @@ class particleData{
 			      "process",
 			      "source",
 			      "isMC",
-				  "isOnres",
+			      "isOnres",
 			      "uniqueID",
 			      "Energy",
 			      "bFlag",
